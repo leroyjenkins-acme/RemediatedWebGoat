@@ -16,7 +16,6 @@ function loadVotes() {
                 var progressBar = $('#progressBar' + i);
                 progressBar.width(Math.round(percent) * 2 + '%');
                 $("#nrOfVotes" + i).html(votes[i]);
-
             }
         }
     );
@@ -40,7 +39,6 @@ function average() {
     );
 }
 
-
 function doVote(stars) {
     $("#voteResultMsg").hide();
     $.get("challenge/8/vote/" + stars, function (result) {
@@ -49,7 +47,7 @@ function doVote(stars) {
         } else {
             $("#voteResultMsg").addClass('alert-success alert-dismissable');
         }
-        $("#voteResultMsg").html(result["message"]);
+        $("#voteResultMsg").text(result["message"]); // Changed from .html() to .text()
         $("#voteResultMsg").show();
     })
     loadVotes();
