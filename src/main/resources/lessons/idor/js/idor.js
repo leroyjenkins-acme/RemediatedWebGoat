@@ -1,10 +1,10 @@
 // need custom js for this?
 
 webgoat.customjs.idorViewProfile = function(data) {
-    webgoat.customjs.jquery('#idor-profile').html(
-        'name:' + data.name + '<br/>'+
-        'color:' + data.color + '<br/>'+
-        'size:' + data.size + '<br/>'
+    webgoat.customjs.jquery('#idor-profile').text(
+        'name:' + data.name + '\n'+
+        'color:' + data.color + '\n'+
+        'size:' + data.size + '\n'
     );
 }
 
