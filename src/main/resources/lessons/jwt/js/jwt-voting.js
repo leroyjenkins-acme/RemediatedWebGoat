@@ -5,7 +5,7 @@ $(document).ready(function () {
 function loginVotes(user) {
     $("#name").text(user);
     $.ajax({
-        url: 'JWT/votings/login?user=' + user,
+        url: 'JWT/votings/login?user=' + encodeURIComponent(user),
         contentType: "application/json"
     }).always(function () {
         getVotings();
@@ -42,7 +42,7 @@ function getVotings() {
     $("#votesList").empty();
     $.get("JWT/votings", function (result, status) {
         for (var i = 0; i < result.length; i++) {
-            var voteTemplate = html.replace('IMAGE_SMALL', result[i].imageSmall);
+            var voteTemplate = html.replace('IMAGE_SMALL', encodeURIComponent(result[i].imageSmall));
             if (i === 0) {
                 voteTemplate = voteTemplate.replace('ACTIVE', 'active');
                 voteTemplate = voteTemplate.replace('BUTTON', 'btn-default');
@@ -50,10 +50,10 @@ function getVotings() {
                 voteTemplate = voteTemplate.replace('ACTIVE', '');
                 voteTemplate = voteTemplate.replace('BUTTON', 'btn-primary');
             }
-            voteTemplate = voteTemplate.replace(/TITLE/g, result[i].title);
-            voteTemplate = voteTemplate.replace('INFORMATION', result[i].information || '');
-            voteTemplate = voteTemplate.replace('NO_VOTES', result[i].numberOfVotes || '');
-            voteTemplate = voteTemplate.replace('AVERAGE', result[i].average || '');
+            voteTemplate = voteTemplate.replace(/TITLE/g, encodeURIComponent(result[i].title));
+            voteTemplate = voteTemplate.replace('INFORMATION', $('<div>').text(result[i].information || '').html());
+            voteTemplate = voteTemplate.replace('NO_VOTES', $('<div>').text(result[i].numberOfVotes || '').html());
+            voteTemplate = voteTemplate.replace('AVERAGE', $('<div>').text(result[i].average || '').html());
 
             var hidden = (result[i].numberOfVotes === undefined ? 'hidden' : '');
             voteTemplate = voteTemplate.replace(/HIDDEN_VIEW_VOTES/g, hidden);
@@ -76,7 +76,7 @@ function vote(title) {
     } else {
         $.ajax({
             type: 'POST',
-            url: 'JWT/votings/' + title
+            url: 'JWT/votings/' + encodeURIComponent(title)
         }).then(
             function () {
                 getVotings();
