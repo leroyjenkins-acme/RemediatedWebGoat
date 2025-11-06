@@ -1,8 +1,8 @@
 function follow(user) {
     $.ajax({
         type: 'POST',
-        url: 'JWT/kid/follow/' + user
+        url: 'JWT/kid/follow/' + encodeURIComponent(user)
     }).then(function (result) {
-        $("#toast").append(result);
+        $("#toast").text(result);
     })
 }
