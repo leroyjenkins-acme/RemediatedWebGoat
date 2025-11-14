@@ -39,7 +39,7 @@ public class StartWebGoat {
     var url = webGoatContext.getEnvironment().getProperty("webgoat.url");
     var sslEnabled =
         webGoatContext.getEnvironment().getProperty("server.ssl.enabled", Boolean.class);
-    log.warn(
+    log.info(
         "Please browse to " + "{} to start using WebGoat...",
         sslEnabled ? url.replace("http", "https") : url);
   }
