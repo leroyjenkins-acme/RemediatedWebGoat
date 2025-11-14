@@ -21,7 +21,7 @@ public class Welcome {
    * @param request a {@link jakarta.servlet.http.HttpServletRequest} object.
    * @return a {@link org.springframework.web.servlet.ModelAndView} object.
    */
-  @GetMapping(path = {"welcome.mvc"})
+  @GetMapping(path = {"/welcome.mvc"})
   public ModelAndView welcome(HttpServletRequest request) {
 
     // set the welcome attribute
