@@ -42,7 +42,16 @@ public class DefaultCredentialsTask implements AssignmentEndpoint {
           .build();
     }
 
-    if (DEFAULT_USERNAME.equals(username.trim()) && DEFAULT_PASSWORD.equals(password)) {
+    boolean isAuthenticated = DEFAULT_USERNAME.equals(username.trim()) && DEFAULT_PASSWORD.equals(password);
+
+    // Introduce a delay to mitigate timing attacks
+    try {
+        Thread.sleep(100);
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+    }
+
+    if (isAuthenticated) {
       return success(this)
           .feedback("securitymisconfiguration.task1.success")
           .output("User profile: staging admin (no MFA)")
