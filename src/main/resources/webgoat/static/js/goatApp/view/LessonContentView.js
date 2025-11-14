@@ -101,7 +101,13 @@ define(['jquery',
                 var formUrl = $(curForm).attr('action');
                 var formMethod = $(curForm).attr('method');
                 var contentType = ($(curForm).attr('contentType')) ? $(curForm).attr('contentType') : 'application/x-www-form-urlencoded; charset=UTF-8';
-                var encType = $(curForm).attr('enctype')
+                var encType = $(curForm).attr('enctype');
+
+                // Validate and sanitize the URL to prevent HTTP Splitting and Resource Injection
+                if (!isValidUrl(formUrl)) {
+                    console.error('Invalid URL');
+                    return false;
+                }
 
                 $.ajax({
                     url: formUrl,
@@ -153,9 +159,9 @@ define(['jquery',
 
             onErrorResponse: function (data, b, c) {
                 console.error(data);
-        	if (data.status == 403) {
-        		this.renderFeedback(data.responseText);
-        	}
+                if (data.status == 403) {
+                    this.renderFeedback(data.responseText);
+                }
                 console.error(b);
                 console.error(c);
                 return false;
@@ -226,5 +232,13 @@ define(['jquery',
 
         });
 
+        function isValidUrl(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
 
     });
