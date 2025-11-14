@@ -41,6 +41,12 @@ public class MissingFunctionACYourHash implements AssignmentEndpoint {
     if (userHash.equals(displayUser.getUserHash())) {
       return success(this).feedback("access-control.hash.success").build();
     } else {
+      // Introduce a delay to mitigate timing attacks
+      try {
+        Thread.sleep(50); // Sleep for 50 milliseconds
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
       return failed(this).build();
     }
   }
