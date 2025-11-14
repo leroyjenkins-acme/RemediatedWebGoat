@@ -40,10 +40,23 @@ public class LogBleedingTask implements AssignmentEndpoint {
       return failed(this).output("Please provide username (Admin) and password").build();
     }
 
-    if (username.equals("Admin") && password.equals(this.password)) {
+    // Introduce a constant time comparison to prevent timing attacks
+    if (username.equals("Admin") && constantTimeEquals(password, this.password)) {
       return success(this).build();
     }
 
     return failed(this).build();
+  }
+
+  // Method to perform constant time comparison
+  private boolean constantTimeEquals(String a, String b) {
+    if (a.length() != b.length()) {
+      return false;
+    }
+    int result = 0;
+    for (int i = 0; i < a.length(); i++) {
+      result |= a.charAt(i) ^ b.charAt(i);
+    }
+    return result == 0;
   }
 }
