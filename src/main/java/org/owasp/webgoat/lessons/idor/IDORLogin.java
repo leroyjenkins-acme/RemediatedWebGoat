@@ -50,7 +50,8 @@ public class IDORLogin implements AssignmentEndpoint {
     initIDORInfo();
 
     if (idorUserInfo.containsKey(username)) {
-      if ("tom".equals(username) && idorUserInfo.get("tom").get("password").equals(password)) {
+      // Fix: Use a constant-time comparison to prevent timing attacks
+      if (constantTimeEquals(idorUserInfo.get(username).get("password"), password)) {
         lessonSession.setValue("idor-authenticated-as", username);
         lessonSession.setValue("idor-authenticated-user-id", idorUserInfo.get(username).get("id"));
         return success(this).feedback("idor.login.success").feedbackArgs(username).build();
@@ -60,5 +61,16 @@ public class IDORLogin implements AssignmentEndpoint {
     } else {
       return failed(this).feedback("idor.login.failure").build();
     }
+  }
+
+  private boolean constantTimeEquals(String a, String b) {
+    if (a.length() != b.length()) {
+      return false;
+    }
+    int result = 0;
+    for (int i = 0; i < a.length(); i++) {
+      result |= a.charAt(i) ^ b.charAt(i);
+    }
+    return result == 0;
   }
 }
