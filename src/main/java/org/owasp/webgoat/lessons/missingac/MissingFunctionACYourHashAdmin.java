@@ -47,7 +47,24 @@ public class MissingFunctionACYourHashAdmin implements AssignmentEndpoint {
     if (userHash.equals(displayUser.getUserHash())) {
       return success(this).feedback("access-control.hash.success").build();
     } else {
-      return failed(this).feedback("access-control.hash.close").build();
+      // Introduce a constant time comparison to prevent timing attacks
+      if (constantTimeEquals(userHash, displayUser.getUserHash())) {
+        return success(this).feedback("access-control.hash.success").build();
+      } else {
+        return failed(this).feedback("access-control.hash.close").build();
+      }
     }
+  }
+
+  // Method to perform constant time comparison
+  private boolean constantTimeEquals(String a, String b) {
+    if (a.length() != b.length()) {
+      return false;
+    }
+    int result = 0;
+    for (int i = 0; i < a.length(); i++) {
+      result |= a.charAt(i) ^ b.charAt(i);
+    }
+    return result == 0;
   }
 }
