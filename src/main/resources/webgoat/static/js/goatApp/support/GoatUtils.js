@@ -23,7 +23,7 @@ define(['jquery',
                     }
                     return arr;
                 },
-//                debugFormSubmission: false,
+    //                debugFormSubmission: false,
                 // pre-submit callback
                 showRequest: function(formData, jqForm, options) {
                     if (GoatUtils.debugFormSubmission) {
@@ -54,7 +54,7 @@ define(['jquery',
 
                 showLessonCookiesAndParams: function() {
                     $.get(goatConstants.cookieService, {}, function(reply) {
-                        $("#lesson_cookies").html(reply);
+                        $("#lesson_cookies").text(reply); // Use .text() instead of .html()
                     }, "html");
                 },
 
@@ -87,4 +87,4 @@ define(['jquery',
         };
 
         return goatUtils;
-});
+    });
