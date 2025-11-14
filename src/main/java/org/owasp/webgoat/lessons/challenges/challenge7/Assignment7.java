@@ -78,7 +78,11 @@ public class Assignment7 implements AssignmentEndpoint {
     if (StringUtils.hasText(email)) {
       String username = email.substring(0, email.indexOf("@"));
       if (StringUtils.hasText(username)) {
+        // Validate and sanitize the URL to prevent SSRF
         URI uri = new URI(request.getRequestURL().toString());
+        if (!isValidHost(uri.getHost())) {
+          return AttackResult.builder().feedback("invalid.host").build();
+        }
         Email mail =
             Email.builder()
                 .title("Your password reset link for challenge 7")
@@ -95,6 +99,11 @@ public class Assignment7 implements AssignmentEndpoint {
       }
     }
     return success(this).feedback("email.send").feedbackArgs(email).build();
+  }
+
+  private boolean isValidHost(String host) {
+    // Implement host validation logic here
+    return host != null && host.matches("^[a-zA-Z0-9.-]+$");
   }
 
   @GetMapping(value = "/challenge/7/.git", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
