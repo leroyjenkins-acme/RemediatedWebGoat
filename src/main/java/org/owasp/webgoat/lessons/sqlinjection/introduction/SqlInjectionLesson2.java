@@ -9,9 +9,9 @@ import static java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE;
 import static org.owasp.webgoat.container.assignments.AttackResultBuilder.failed;
 import static org.owasp.webgoat.container.assignments.AttackResultBuilder.success;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import org.owasp.webgoat.container.LessonDataSource;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
@@ -44,9 +44,11 @@ public class SqlInjectionLesson2 implements AssignmentEndpoint {
   }
 
   protected AttackResult injectableQuery(String query) {
-    try (var connection = dataSource.getConnection()) {
-      Statement statement = connection.createStatement(TYPE_SCROLL_INSENSITIVE, CONCUR_READ_ONLY);
-      ResultSet results = statement.executeQuery(query);
+    String sql = "SELECT * FROM employees WHERE department = ?";
+    try (var connection = dataSource.getConnection();
+         PreparedStatement statement = connection.prepareStatement(sql, TYPE_SCROLL_INSENSITIVE, CONCUR_READ_ONLY)) {
+      statement.setString(1, query);
+      ResultSet results = statement.executeQuery();
       StringBuilder output = new StringBuilder();
 
       results.first();
