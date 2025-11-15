@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -58,7 +59,7 @@ public class RegistrationController {
     return "redirect:/attack";
   }
 
-  @GetMapping("/login-oauth.mvc")
+  @RequestMapping(value = "/login-oauth.mvc", method = RequestMethod.GET)
   public String registrationOAUTH(Authentication authentication, HttpServletRequest request)
       throws ServletException {
     log.info("register oauth user in database");
