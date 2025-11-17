@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import org.owasp.webgoat.container.users.WebGoatUser;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -27,8 +28,9 @@ public class LessonConnectionInvocationHandler implements InvocationHandler {
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     var authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null && authentication.getPrincipal() instanceof WebGoatUser user) {
-      try (var statement = targetConnection.createStatement()) {
-        statement.execute("SET SCHEMA \"" + user.getUsername() + "\"");
+      try (PreparedStatement statement = targetConnection.prepareStatement("SET SCHEMA ?")) {
+        statement.setString(1, user.getUsername());
+        statement.execute();
       }
     }
     try {
