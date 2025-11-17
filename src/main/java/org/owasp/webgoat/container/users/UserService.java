@@ -51,7 +51,7 @@ public class UserService implements UserDetailsService {
 
   private void createLessonsForUser(WebGoatUser webGoatUser) {
     String schemaName = webGoatUser.getUsername().replaceAll("[^a-zA-Z0-9]", "");
-    jdbcTemplate.execute("CREATE SCHEMA \"" + schemaName + "\" authorization dba");
+    jdbcTemplate.execute("CREATE SCHEMA \"" + schemaName + "\"");
     flywayLessons.apply(schemaName).migrate();
   }
 
