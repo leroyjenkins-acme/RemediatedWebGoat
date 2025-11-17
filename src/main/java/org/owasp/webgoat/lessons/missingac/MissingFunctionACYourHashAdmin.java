@@ -44,15 +44,11 @@ public class MissingFunctionACYourHashAdmin implements AssignmentEndpoint {
 
     var user = userRepository.findByUsername("Jerry");
     var displayUser = new DisplayUser(user, PASSWORD_SALT_ADMIN);
-    if (userHash.equals(displayUser.getUserHash())) {
+    // Introduce a constant time comparison to prevent timing attacks
+    if (constantTimeEquals(userHash, displayUser.getUserHash())) {
       return success(this).feedback("access-control.hash.success").build();
     } else {
-      // Introduce a constant time comparison to prevent timing attacks
-      if (constantTimeEquals(userHash, displayUser.getUserHash())) {
-        return success(this).feedback("access-control.hash.success").build();
-      } else {
-        return failed(this).feedback("access-control.hash.close").build();
-      }
+      return failed(this).feedback("access-control.hash.close").build();
     }
   }
 
