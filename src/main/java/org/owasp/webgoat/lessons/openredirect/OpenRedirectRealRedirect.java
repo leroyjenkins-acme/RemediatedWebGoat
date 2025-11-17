@@ -19,7 +19,7 @@ public class OpenRedirectRealRedirect {
   public ModelAndView real(@RequestParam("url") String url) {
     // Validate the URL to prevent open redirect vulnerabilities
     if (isValidUrl(url)) {
-      return new ModelAndView("redirect:" + url);
+      return new ModelAndView("redirect:" + encodeUrl(url));
     } else {
       return new ModelAndView("error"); // Redirect to an error page or handle the error appropriately
     }
@@ -29,5 +29,10 @@ public class OpenRedirectRealRedirect {
     // Implement URL validation logic here
     // For example, check if the URL is within the same domain or matches a whitelist
     return url.startsWith("https://trusted-domain.com");
+  }
+
+  private String encodeUrl(String url) {
+    // Encode the URL to prevent XSS
+    return org.springframework.web.util.UriUtils.encode(url, "UTF-8");
   }
 }
