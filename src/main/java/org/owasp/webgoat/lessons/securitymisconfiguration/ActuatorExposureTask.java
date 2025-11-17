@@ -59,7 +59,8 @@ public class ActuatorExposureTask implements AssignmentEndpoint {
           .feedback("securitymisconfiguration.task3.failure.blank")
           .build();
     }
-    if (LEAKED_API_KEY.equals(apiKey)) {
+    // Introduce a constant time comparison to prevent timing attacks
+    if (constantTimeEquals(LEAKED_API_KEY, apiKey)) {
       return success(this)
           .feedback("securitymisconfiguration.task3.success")
           .output("Actuator endpoints now require authentication and are limited to ops network.")
@@ -68,5 +69,17 @@ public class ActuatorExposureTask implements AssignmentEndpoint {
     return failed(this)
         .feedback("securitymisconfiguration.task3.failure.invalid")
         .build();
+  }
+
+  // Method to perform constant time comparison
+  private boolean constantTimeEquals(String a, String b) {
+    if (a.length() != b.length()) {
+      return false;
+    }
+    int result = 0;
+    for (int i = 0; i < a.length(); i++) {
+      result |= a.charAt(i) ^ b.charAt(i);
+    }
+    return result == 0;
   }
 }
