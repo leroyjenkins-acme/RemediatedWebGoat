@@ -14,7 +14,7 @@ function fetchUserData() {
 }
 
 function ajaxFunction(userId) {
-    $.get("clientSideFiltering/salaries?userId=" + userId, function (result, status) {
+    $.get("clientSideFiltering/salaries", { userId: userId }, function (result, status) {
         var html = "<table border = '1' width = '90%' align = 'center'";
         html = html + '<tr>';
         html = html + '<td>UserID</td>';
