@@ -5,8 +5,7 @@ on:
   workflow_dispatch:  # Allows manual triggering
   # no push triggers
   # no pull request triggers
-  schedule:
-    - cron: '00 20 * * *'
+  # no schedule triggers
 
 permissions:
   contents: write
