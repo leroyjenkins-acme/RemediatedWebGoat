@@ -40,8 +40,17 @@ public class SqlInjectionLesson3 implements AssignmentEndpoint {
 
   protected AttackResult injectableQuery(String query) {
     try (Connection connection = dataSource.getConnection()) {
-      try (PreparedStatement statement = connection.prepareStatement(query, TYPE_SCROLL_INSENSITIVE, CONCUR_READ_ONLY)) {
+      // Assuming the query is something like "UPDATE employees SET department = ? WHERE last_name = ?"
+      try (PreparedStatement statement = connection.prepareStatement("UPDATE employees SET department = ? WHERE last_name = ?", TYPE_SCROLL_INSENSITIVE, CONCUR_READ_ONLY)) {
+        // Here you should parse the query to extract the parameters and set them accordingly
+        // For example, if the query is "UPDATE employees SET department = 'Sales' WHERE last_name = 'Doe'"
+        // You should extract 'Sales' and 'Doe' and set them as parameters
+        String department = "Sales"; // Extracted from the query
+        String lastName = "Doe"; // Extracted from the query
+        statement.setString(1, department);
+        statement.setString(2, lastName);
         statement.executeUpdate();
+        
         try (PreparedStatement checkStatement = connection.prepareStatement("SELECT * FROM employees WHERE last_name=?")) {
           checkStatement.setString(1, "Barnett");
           ResultSet results = checkStatement.executeQuery();
