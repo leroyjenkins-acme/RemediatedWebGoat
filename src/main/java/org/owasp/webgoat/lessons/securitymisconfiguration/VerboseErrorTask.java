@@ -48,7 +48,7 @@ public class VerboseErrorTask implements AssignmentEndpoint {
 
   @GetMapping(value = "/SecurityMisconfiguration/task2/config", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> fetchConfig(@RequestParam(value = "token", required = false) String token) {
-    if (LEAKED_TOKEN.equals(token)) {
+    if (token != null && constantTimeEquals(LEAKED_TOKEN, token)) {
       String json =
           "{\n"
               + "  \"feature\": \"debug\",\n"
@@ -64,7 +64,7 @@ public class VerboseErrorTask implements AssignmentEndpoint {
       value = "/SecurityMisconfiguration/task2",
       consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public AttackResult submitToken(@RequestParam("token") String token) {
-    if (LEAKED_TOKEN.equals(token)) {
+    if (token != null && constantTimeEquals(LEAKED_TOKEN, token)) {
       return success(this)
           .feedback("securitymisconfiguration.task2.success")
           .output("Debug mode disabled. Stack traces are now safe for users.")
@@ -78,5 +78,16 @@ public class VerboseErrorTask implements AssignmentEndpoint {
     return failed(this)
         .feedback("securitymisconfiguration.task2.failure.invalid")
         .build();
+  }
+
+  private boolean constantTimeEquals(String a, String b) {
+    if (a.length() != b.length()) {
+      return false;
+    }
+    int result = 0;
+    for (int i = 0; i < a.length(); i++) {
+      result |= a.charAt(i) ^ b.charAt(i);
+    }
+    return result == 0;
   }
 }
