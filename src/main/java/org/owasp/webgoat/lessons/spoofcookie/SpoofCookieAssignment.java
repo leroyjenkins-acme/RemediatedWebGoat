@@ -59,6 +59,7 @@ public class SpoofCookieAssignment implements AssignmentEndpoint {
     cookie.setMaxAge(0);
     cookie.setPath("/WebGoat");
     cookie.setSecure(true);
+    cookie.setHttpOnly(true); // Added HttpOnly flag to the cookie
     response.addCookie(cookie);
   }
 
