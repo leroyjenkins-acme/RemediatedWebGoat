@@ -60,7 +60,7 @@ function getVotings() {
             hidden = (result[i].average === undefined ? 'hidden' : '');
             voteTemplate = voteTemplate.replace(/HIDDEN_VIEW_RATING/g, hidden);
 
-            $("#votesList").append(voteTemplate);
+            $("#votesList").append($(voteTemplate));
         }
     })
 }
