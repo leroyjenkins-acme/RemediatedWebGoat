@@ -17,7 +17,17 @@ public class OpenRedirectRealRedirect {
 
   @GetMapping("/OpenRedirect/realRedirect")
   public ModelAndView real(@RequestParam("url") String url) {
-    // Intentionally vulnerable: no validation
-    return new ModelAndView("redirect:" + url);
+    // Validate the URL to prevent open redirect vulnerabilities
+    if (isValidUrl(url)) {
+      return new ModelAndView("redirect:" + url);
+    } else {
+      return new ModelAndView("error"); // Redirect to an error page or handle the error appropriately
+    }
+  }
+
+  private boolean isValidUrl(String url) {
+    // Implement URL validation logic here
+    // For example, check if the URL is within the same domain or matches a whitelist
+    return url.startsWith("https://trusted-domain.com");
   }
 }
