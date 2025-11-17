@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.apache.commons.text.StringEscapeUtils;
 
 @Slf4j
 public class Ping {
@@ -27,7 +28,8 @@ public class Ping {
       @RequestHeader("User-Agent") String userAgent,
       @RequestParam(required = false) String text,
       @CurrentUsername String username) {
-    String logLine = String.format("%s %s %s", "GET", userAgent, text);
+    String sanitizedText = StringEscapeUtils.escapeHtml4(text);
+    String logLine = String.format("%s %s %s", "GET", userAgent, sanitizedText);
     log.debug(logLine);
     File logFile = new File(webGoatHomeDirectory, "/XXE/log" + username + ".txt");
     try {
