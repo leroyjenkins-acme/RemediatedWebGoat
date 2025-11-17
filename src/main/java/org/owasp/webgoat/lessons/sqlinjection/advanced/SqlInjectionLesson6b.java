@@ -52,12 +52,12 @@ public class SqlInjectionLesson6b implements AssignmentEndpoint {
           password = results.getString("password");
         }
       } catch (SQLException sqle) {
-        sqle.printStackTrace();
-        // do nothing
+        // Log the exception with a generic message
+        System.err.println("An error occurred while accessing the database.");
       }
     } catch (Exception e) {
-      e.printStackTrace();
-      // do nothing
+      // Log the exception with a generic message
+      System.err.println("An unexpected error occurred.");
     }
     return (password);
   }
