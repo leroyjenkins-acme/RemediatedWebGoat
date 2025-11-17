@@ -45,8 +45,14 @@ public class SSRFTask1 implements AssignmentEndpoint {
       }
     } catch (Exception e) {
       // Log the exception without exposing sensitive information
-      System.err.println("An error occurred while processing the request.");
+      logError("An error occurred while processing the request.", e);
       return failed(this).output("An unexpected error occurred. Please try again later.").build();
     }
+  }
+
+  private void logError(String message, Exception e) {
+    // Implement a proper logging mechanism here
+    System.err.println(message);
+    e.printStackTrace(); // This should be replaced with a proper logging framework
   }
 }
