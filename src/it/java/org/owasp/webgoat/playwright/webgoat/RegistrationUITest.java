@@ -24,7 +24,7 @@ public class RegistrationUITest extends PlaywrightTest {
     loginPage.login(Authentication.getTweety().name(), Authentication.getTweety().password());
 
     var newUsername = "newuser" + System.currentTimeMillis();
-    var password = "password123";
+    var password = getPasswordFromSecureSource();
     var registrationPage = new RegistrationPage(page);
     registrationPage.open();
     registrationPage.register(newUsername, password);
@@ -40,9 +40,14 @@ public class RegistrationUITest extends PlaywrightTest {
     registrationPage.open();
 
     var newUsername = "newuser" + System.currentTimeMillis();
-    var password = "password123";
+    var password = getPasswordFromSecureSource();
     registrationPage.register(newUsername, password);
 
     assertThat(page.content()).contains(newUsername);
+  }
+
+  private String getPasswordFromSecureSource() {
+    // Implement a secure way to retrieve the password, e.g., from environment variables or a secure vault
+    return System.getenv("SECURE_PASSWORD");
   }
 }
