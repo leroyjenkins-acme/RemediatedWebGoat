@@ -54,15 +54,15 @@ public class ActuatorExposureTask implements AssignmentEndpoint {
       value = "/SecurityMisconfiguration/task3",
       consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public AttackResult submitApiKey(@RequestParam("apiKey") String apiKey) {
+    if (apiKey == null || apiKey.isBlank()) {
+      return failed(this)
+          .feedback("securitymisconfiguration.task3.failure.blank")
+          .build();
+    }
     if (LEAKED_API_KEY.equals(apiKey)) {
       return success(this)
           .feedback("securitymisconfiguration.task3.success")
           .output("Actuator endpoints now require authentication and are limited to ops network.")
-          .build();
-    }
-    if (apiKey == null || apiKey.isBlank()) {
-      return failed(this)
-          .feedback("securitymisconfiguration.task3.failure.blank")
           .build();
     }
     return failed(this)
