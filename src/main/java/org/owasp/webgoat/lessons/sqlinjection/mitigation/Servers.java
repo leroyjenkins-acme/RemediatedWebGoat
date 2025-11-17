@@ -46,6 +46,10 @@ public class Servers {
     List<Server> servers = new ArrayList<>();
 
     try (var connection = dataSource.getConnection()) {
+      // Validate the column name to prevent SQL injection
+      if (!isValidColumn(column)) {
+        throw new IllegalArgumentException("Invalid column name");
+      }
       try (var statement =
           connection.prepareStatement(
               "select id, hostname, ip, mac, status, description from SERVERS where status <> 'out"
@@ -67,5 +71,11 @@ public class Servers {
       }
     }
     return servers;
+  }
+
+  private boolean isValidColumn(String column) {
+    // Define a list of valid column names
+    List<String> validColumns = List.of("id", "hostname", "ip", "mac", "status", "description");
+    return validColumns.contains(column);
   }
 }
