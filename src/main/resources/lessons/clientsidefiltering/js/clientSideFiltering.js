@@ -35,7 +35,7 @@ function ajaxFunction(userId) {
         html = html + '</tr></table>';
 
         var newdiv = document.createElement("div");
-        newdiv.innerHTML = html;
+        newdiv.innerHTML = DOMPurify.sanitize(html);
         var container = document.getElementById("hiddenEmployeeRecords");
         container.appendChild(newdiv);
     });
