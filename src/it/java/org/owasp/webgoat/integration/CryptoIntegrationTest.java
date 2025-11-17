@@ -33,14 +33,16 @@ public class CryptoIntegrationTest extends IntegrationTest {
     try {
       checkAssignment4();
     } catch (NoSuchAlgorithmException e) {
-      e.printStackTrace();
+      // Log the error without exposing sensitive information
+      System.err.println("An error occurred while checking assignment 4.");
       fail();
     }
 
     try {
       checkAssignmentSigning();
     } catch (Exception e) {
-      e.printStackTrace();
+      // Log the error without exposing sensitive information
+      System.err.println("An error occurred while checking assignment signing.");
       fail();
     }
 
