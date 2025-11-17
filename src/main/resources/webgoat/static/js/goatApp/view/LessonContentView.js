@@ -110,7 +110,7 @@ define(['jquery',
                 }
 
                 $.ajax({
-                    url: formUrl,
+                    url: encodeURI(formUrl), // Encode the URL to prevent injection
                     headers: additionalHeaders,
                     method: formMethod,
                     processData: 'multipart/form-data' !== encType,
