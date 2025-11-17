@@ -42,10 +42,8 @@ public class SqlInjectionLesson6b implements AssignmentEndpoint {
     String password = "dave";
     try (Connection connection = dataSource.getConnection()) {
       String query = "SELECT password FROM user_system_data WHERE user_name = 'dave'";
-      try {
-        Statement statement =
-            connection.createStatement(
-                ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      try (Statement statement = connection.createStatement(
+              ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
         ResultSet results = statement.executeQuery(query);
 
         if (results != null && results.first()) {
