@@ -37,6 +37,12 @@ public class Assignment1 implements AssignmentEndpoint {
     if (passwordCorrect && ipAddressKnown) {
       return success(this).feedback("challenge.solved").feedbackArgs(flags.getFlag(1)).build();
     } else if (passwordCorrect) {
+      // Introduce a delay to mitigate timing attacks
+      try {
+        Thread.sleep(100); // 100 milliseconds delay
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
       return failed(this).feedback("ip.address.unknown").build();
     }
     return failed(this).build();
