@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.HtmlUtils;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class LessonProgressService {
 
     var lessonProgress = userProgress.getLessonProgress(lesson);
     return lessonProgress.getLessonOverview().entrySet().stream()
-        .map(entry -> new LessonOverview(entry.getKey().getAssignment(), entry.getValue()))
+        .map(entry -> new LessonOverview(HtmlUtils.htmlEscape(entry.getKey().getAssignment().toString()), entry.getValue()))
         .toList();
   }
 
@@ -51,7 +52,7 @@ public class LessonProgressService {
   // so creating intermediate object is the easiest solution
   private static class LessonOverview {
 
-    private Assignment assignment;
+    private String assignment;
     private Boolean solved;
   }
 }
