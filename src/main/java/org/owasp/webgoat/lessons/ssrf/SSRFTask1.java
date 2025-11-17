@@ -44,8 +44,9 @@ public class SSRFTask1 implements AssignmentEndpoint {
         return failed(this).feedback("ssrf.failure").output(html.toString()).build();
       }
     } catch (Exception e) {
-      e.printStackTrace();
-      return failed(this).output(e.getMessage()).build();
+      // Log the exception without exposing sensitive information
+      System.err.println("An error occurred while processing the request.");
+      return failed(this).output("An unexpected error occurred. Please try again later.").build();
     }
   }
 }
