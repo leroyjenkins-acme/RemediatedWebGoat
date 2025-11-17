@@ -26,13 +26,19 @@ public class InsecureLoginTask implements AssignmentEndpoint {
   }
 
   private boolean authenticateUser(String username, String password) {
-    // Simulate a constant time comparison to prevent timing attacks
-    try {
-      Thread.sleep(50); // Introduce a fixed delay
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
+    // Use a constant time comparison to prevent timing attacks
+    return constantTimeEquals("CaptainJack", username) && constantTimeEquals("BlackPearl", password);
+  }
+
+  private boolean constantTimeEquals(String a, String b) {
+    if (a.length() != b.length()) {
+      return false;
     }
-    return "CaptainJack".equals(username) && "BlackPearl".equals(password);
+    int result = 0;
+    for (int i = 0; i < a.length(); i++) {
+      result |= a.charAt(i) ^ b.charAt(i);
+    }
+    return result == 0;
   }
 
   @PostMapping("/InsecureLogin/login")
