@@ -44,7 +44,7 @@ public class DefaultCredentialsTask implements AssignmentEndpoint {
 
     boolean isAuthenticated = DEFAULT_USERNAME.equals(username.trim()) && DEFAULT_PASSWORD.equals(password);
 
-    // Introduce a delay to mitigate timing attacks
+    // Introduce a constant time delay to mitigate timing attacks
     try {
         Thread.sleep(100);
     } catch (InterruptedException e) {
