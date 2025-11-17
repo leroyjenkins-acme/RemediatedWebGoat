@@ -74,7 +74,7 @@ public class JWTHeaderKIDEndpoint implements AssignmentEndpoint {
                           try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                             preparedStatement.setString(1, kid);
                             ResultSet rs = preparedStatement.executeQuery();
-                            while (rs.next()) {
+                            if (rs.next()) { // Use if instead of while to ensure only one result is processed
                               return TextCodec.BASE64.decode(rs.getString(1));
                             }
                           }
