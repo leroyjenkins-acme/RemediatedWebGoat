@@ -38,7 +38,17 @@ public class RestartLessonService {
       @PathVariable("lesson") LessonName lessonName, @CurrentUser WebGoatUser user) {
     var lesson = course.getLessonByName(lessonName);
 
+    if (lesson == null) {
+      log.warn("Lesson not found: {}", lessonName);
+      return;
+    }
+
     UserProgress userTracker = userTrackerRepository.findByUser(user.getUsername());
+    if (userTracker == null) {
+      log.warn("User progress not found for user: {}", user.getUsername());
+      return;
+    }
+
     userTracker.reset(lesson);
     userTrackerRepository.save(userTracker);
 
