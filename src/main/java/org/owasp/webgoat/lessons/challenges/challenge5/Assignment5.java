@@ -45,12 +45,12 @@ public class Assignment5 implements AssignmentEndpoint {
               "select password from challenge_users where userid = ? and password = ?");
       statement.setString(1, username_login);
       statement.setString(2, password_login);
-      ResultSet resultSet = statement.executeQuery();
-
-      if (resultSet.next()) {
-        return success(this).feedback("challenge.solved").feedbackArgs(flags.getFlag(5)).build();
-      } else {
-        return failed(this).feedback("challenge.close").build();
+      try (ResultSet resultSet = statement.executeQuery()) {
+        if (resultSet.next()) {
+          return success(this).feedback("challenge.solved").feedbackArgs(flags.getFlag(5)).build();
+        } else {
+          return failed(this).feedback("challenge.close").build();
+        }
       }
     }
   }
