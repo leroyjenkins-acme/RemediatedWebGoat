@@ -112,7 +112,8 @@ public class SqlInjectionLesson10b implements AssignmentEndpoint {
     try {
       javaFileObject = new JavaObjectFromString("TestClass.java", javaFileContents.toString());
     } catch (Exception exception) {
-      exception.printStackTrace();
+      // Log the exception instead of printing the stack trace
+      System.err.println("Error creating Java file object: " + exception.getMessage());
     }
     return javaFileObject;
   }
