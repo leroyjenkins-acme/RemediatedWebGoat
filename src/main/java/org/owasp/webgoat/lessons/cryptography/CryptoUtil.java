@@ -39,9 +39,8 @@ public class CryptoUtil {
     KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     RSAKeyGenParameterSpec kpgSpec =
         new RSAKeyGenParameterSpec(
-            2048, FERMAT_PRIMES[new SecureRandom().nextInt(FERMAT_PRIMES.length)]);
+            2048, RSAKeyGenParameterSpec.F4); // Use a fixed public exponent
     keyPairGenerator.initialize(kpgSpec);
-    // keyPairGenerator.initialize(2048);
     return keyPairGenerator.generateKeyPair();
   }
 
