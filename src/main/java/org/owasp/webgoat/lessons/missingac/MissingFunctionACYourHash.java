@@ -41,13 +41,22 @@ public class MissingFunctionACYourHash implements AssignmentEndpoint {
     if (userHash.equals(displayUser.getUserHash())) {
       return success(this).feedback("access-control.hash.success").build();
     } else {
-      // Introduce a delay to mitigate timing attacks
-      try {
-        Thread.sleep(50); // Sleep for 50 milliseconds
-      } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
+      // Introduce a constant time comparison to mitigate timing attacks
+      if (constantTimeComparison(userHash, displayUser.getUserHash())) {
+        return success(this).feedback("access-control.hash.success").build();
       }
       return failed(this).build();
     }
+  }
+
+  private boolean constantTimeComparison(String a, String b) {
+    if (a.length() != b.length()) {
+      return false;
+    }
+    int result = 0;
+    for (int i = 0; i < a.length(); i++) {
+      result |= a.charAt(i) ^ b.charAt(i);
+    }
+    return result == 0;
   }
 }
