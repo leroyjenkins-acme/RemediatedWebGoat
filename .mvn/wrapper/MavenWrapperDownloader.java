@@ -46,7 +46,6 @@ public class MavenWrapperDownloader {
     private static final String PROPERTY_NAME_WRAPPER_URL = "wrapperUrl";
 
     public static void main(String args[]) {
-        System.out.println("- Downloader started");
         if (args.length == 0) {
             System.out.println("- No base directory provided");
             return;
@@ -92,7 +91,8 @@ public class MavenWrapperDownloader {
             System.out.println("Done");
         } catch (Throwable e) {
             System.out.println("- Error downloading");
-            e.printStackTrace();
+            // Log the error instead of printing the stack trace
+            System.err.println(e.getMessage());
         }
     }
 
