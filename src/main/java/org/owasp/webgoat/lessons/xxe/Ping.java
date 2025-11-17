@@ -34,7 +34,7 @@ public class Ping {
     File logFile = new File(webGoatHomeDirectory, "/XXE/log" + username + ".txt");
     try {
       try (PrintWriter pw = new PrintWriter(logFile)) {
-        pw.println(logLine);
+        pw.println(StringEscapeUtils.escapeHtml4(logLine));
       }
     } catch (FileNotFoundException e) {
       log.error("Error occurred while writing the logfile", e);
