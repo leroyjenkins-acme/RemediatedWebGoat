@@ -40,7 +40,7 @@ public class CryptoUtil {
     RSAKeyGenParameterSpec kpgSpec =
         new RSAKeyGenParameterSpec(
             2048, RSAKeyGenParameterSpec.F4); // Use a fixed public exponent
-    keyPairGenerator.initialize(kpgSpec);
+    keyPairGenerator.initialize(kpgSpec, new SecureRandom()); // Added SecureRandom for better security
     return keyPairGenerator.generateKeyPair();
   }
 
