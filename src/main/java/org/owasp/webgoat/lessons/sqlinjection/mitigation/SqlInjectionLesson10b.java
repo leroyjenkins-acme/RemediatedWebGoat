@@ -78,12 +78,12 @@ public class SqlInjectionLesson10b implements AssignmentEndpoint {
         for (Diagnostic d : hasCompiled) {
           errors += d.getMessage(null) + "<br>";
         }
-        return failed(this).feedback("sql-injection.10b.compiler-errors").output(errors).build();
+        return failed(this).feedback("sql-injection.10b.compiler-errors").output("Compilation errors occurred. Please check your code and try again.").build();
       } else {
         return failed(this).feedback("sql-injection.10b.failed").build();
       }
     } catch (Exception e) {
-      return failed(this).output(e.getMessage()).build();
+      return failed(this).output("An unexpected error occurred. Please try again later.").build();
     }
   }
 
