@@ -12,7 +12,7 @@ $(function () {
     var json = "";
     var client = new XMLHttpRequest();
     var quiz_id = document.getElementById("quiz_id").getAttribute("data-quiz_id");
-    client.open('GET', 'lesson_js/questions_' + quiz_id + '.json');
+    client.open('GET', 'lesson_js/questions_' + encodeURIComponent(quiz_id) + '.json'); // Fix applied here
     client.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             json += client.responseText;
