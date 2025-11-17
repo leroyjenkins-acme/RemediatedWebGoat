@@ -54,7 +54,7 @@ function getServers(column) {
             server = server.replace('IP', $('<div>').text(result[i].ip).html());
             server = server.replace('MAC', $('<div>').text(result[i].mac).html());
             server = server.replace('DESCRIPTION', $('<div>').text(result[i].description).html());
-            $("#servers").append(server);
+            $("#servers").append($(server)); // Fix applied here
         }
 
     });
