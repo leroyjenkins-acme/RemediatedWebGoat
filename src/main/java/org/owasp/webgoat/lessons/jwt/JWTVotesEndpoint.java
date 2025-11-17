@@ -114,6 +114,7 @@ public class JWTVotesEndpoint implements AssignmentEndpoint {
       Cookie cookie = new Cookie("access_token", token);
       cookie.setHttpOnly(true); // Set HttpOnly flag
       cookie.setSecure(true); // Set Secure flag
+      cookie.setMaxAge(60 * 60 * 24 * 10); // Set cookie expiration
       response.addCookie(cookie);
       response.setStatus(HttpStatus.OK.value());
       response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -140,7 +141,7 @@ public class JWTVotesEndpoint implements AssignmentEndpoint {
       value.setSerializationView(Views.GuestView.class);
     } else {
       try {
-        Jwt jwt = Jwts.parser().setSigningKey(JWT_PASSWORD).parse(accessToken);
+        Jwt jwt = Jwts.parserBuilder().setSigningKey(JWT_PASSWORD).build().parse(accessToken);
         Claims claims = (Claims) jwt.getBody();
         String user = (String) claims.get("user");
         if ("Guest".equals(user) || !validUsers.contains(user)) {
@@ -165,7 +166,7 @@ public class JWTVotesEndpoint implements AssignmentEndpoint {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     } else {
       try {
-        Jwt jwt = Jwts.parser().setSigningKey(JWT_PASSWORD).parse(accessToken);
+        Jwt jwt = Jwts.parserBuilder().setSigningKey(JWT_PASSWORD).build().parse(accessToken);
         Claims claims = (Claims) jwt.getBody();
         String user = (String) claims.get("user");
         if (!validUsers.contains(user)) {
@@ -188,7 +189,7 @@ public class JWTVotesEndpoint implements AssignmentEndpoint {
       return failed(this).feedback("jwt-invalid-token").build();
     } else {
       try {
-        Jwt jwt = Jwts.parser().setSigningKey(JWT_PASSWORD).parse(accessToken);
+        Jwt jwt = Jwts.parserBuilder().setSigningKey(JWT_PASSWORD).build().parse(accessToken);
         Claims claims = (Claims) jwt.getBody();
         boolean isAdmin = Boolean.valueOf(String.valueOf(claims.get("admin")));
         if (!isAdmin) {
