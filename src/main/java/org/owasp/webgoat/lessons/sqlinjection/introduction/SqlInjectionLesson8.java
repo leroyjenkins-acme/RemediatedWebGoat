@@ -137,7 +137,8 @@ public class SqlInjectionLesson8 implements AssignmentEndpoint {
       statement.setString(2, action);
       statement.executeUpdate();
     } catch (SQLException e) {
-      System.err.println("An error occurred while logging the action.");
+      // Use a logging framework instead of System.err
+      java.util.logging.Logger.getLogger(SqlInjectionLesson8.class.getName()).log(java.util.logging.Level.SEVERE, "An error occurred while logging the action.", e);
     }
   }
 }
