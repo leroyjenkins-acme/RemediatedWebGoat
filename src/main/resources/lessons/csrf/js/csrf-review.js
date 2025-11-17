@@ -38,9 +38,8 @@ $(document).ready(function () {
                 comment = comment.replace('DATETIME', $('<div>').text(result[i].dateTime).html());
                 comment = comment.replace('COMMENT', $('<div>').text(result[i].text).html());
                 comment = comment.replace('STARS', $('<div>').text(result[i].stars).html());
-                $("#list").append(comment);
+                $("#list").append($(comment)); // Ensure the comment is treated as a jQuery object
             }
-
         });
     }
 })
