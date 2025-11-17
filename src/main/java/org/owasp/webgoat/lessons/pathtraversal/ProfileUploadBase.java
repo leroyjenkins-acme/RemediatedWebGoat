@@ -51,6 +51,9 @@ public class ProfileUploadBase implements AssignmentEndpoint {
 
     try {
       Path uploadedFilePath = Paths.get(uploadDirectory.getAbsolutePath(), fullName).normalize();
+      if (!uploadedFilePath.startsWith(uploadDirectory.getAbsolutePath())) {
+        return failed(this).feedback("path-traversal-detected").build();
+      }
       File uploadedFile = uploadedFilePath.toFile();
       uploadedFile.createNewFile();
       FileCopyUtils.copy(file.getBytes(), uploadedFile);
@@ -71,6 +74,9 @@ public class ProfileUploadBase implements AssignmentEndpoint {
   @SneakyThrows
   protected File cleanupAndCreateDirectoryForUser(String username) {
     Path uploadDirectoryPath = Paths.get(this.webGoatHomeDirectory, "PathTraversal", username).normalize();
+    if (!uploadDirectoryPath.startsWith(Paths.get(this.webGoatHomeDirectory, "PathTraversal").normalize())) {
+      throw new IOException("Invalid directory path");
+    }
     File uploadDirectory = uploadDirectoryPath.toFile();
     if (uploadDirectory.exists()) {
       FileSystemUtils.deleteRecursively(uploadDirectory);
@@ -105,6 +111,9 @@ public class ProfileUploadBase implements AssignmentEndpoint {
 
   protected byte[] getProfilePictureAsBase64(String username) {
     Path profilePictureDirectoryPath = Paths.get(this.webGoatHomeDirectory, "PathTraversal", username).normalize();
+    if (!profilePictureDirectoryPath.startsWith(Paths.get(this.webGoatHomeDirectory, "PathTraversal").normalize())) {
+      return defaultImage();
+    }
     File profilePictureDirectory = profilePictureDirectoryPath.toFile();
     var profileDirectoryFiles = profilePictureDirectory.listFiles();
 
