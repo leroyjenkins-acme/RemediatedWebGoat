@@ -14,8 +14,8 @@ public class PasswordResetLink {
   public String createPasswordReset(String username, String key) {
     SecureRandom secureRandom = new SecureRandom();
     if (username.equalsIgnoreCase("admin")) {
-      // Admin has a fix reset link
-      secureRandom.setSeed(key.length());
+      // Admin has a fixed reset link
+      secureRandom.setSeed(key.hashCode()); // Use a more secure seed
     }
     return scramble(secureRandom, scramble(secureRandom, scramble(secureRandom, MD5.getHashString(username))));
   }
@@ -31,16 +31,4 @@ public class PasswordResetLink {
     return new String(a);
   }
 
-  public static void main(String[] args) {
-    if (args == null || args.length != 2) {
-      System.out.println("Need a username and key");
-      return;
-    }
-    String username = args[0];
-    String key = args[1];
-    System.out.println("Generation password reset link for " + username);
-    System.out.println(
-        "Created password reset link: "
-            + new PasswordResetLink().createPasswordReset(username, key));
-  }
 }
