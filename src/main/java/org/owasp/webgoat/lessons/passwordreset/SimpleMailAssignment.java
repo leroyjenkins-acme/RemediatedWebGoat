@@ -45,7 +45,8 @@ public class SimpleMailAssignment implements AssignmentEndpoint {
     String emailAddress = ofNullable(email).orElse("unknown@webgoat.org");
     String username = extractUsername(emailAddress);
 
-    if (username.equals(webGoatUsername) && StringUtils.reverse(username).equals(password)) {
+    // Introduce a constant time comparison to prevent timing attacks
+    if (constantTimeEquals(username, webGoatUsername) && constantTimeEquals(StringUtils.reverse(username), password)) {
       return success(this).build();
     } else {
       return failed(this).feedbackArgs("password-reset-simple.password_incorrect").build();
@@ -97,5 +98,17 @@ public class SimpleMailAssignment implements AssignmentEndpoint {
           .feedbackArgs(username)
           .build();
     }
+  }
+
+  // Helper method for constant time comparison
+  private boolean constantTimeEquals(String a, String b) {
+    if (a.length() != b.length()) {
+      return false;
+    }
+    int result = 0;
+    for (int i = 0; i < a.length(); i++) {
+      result |= a.charAt(i) ^ b.charAt(i);
+    }
+    return result == 0;
   }
 }
