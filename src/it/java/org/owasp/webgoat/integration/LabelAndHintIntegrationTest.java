@@ -172,7 +172,7 @@ public class LabelAndHintIntegrationTest extends IntegrationTest {
       prop.load(input);
     } catch (Exception e) {
       // Log the error instead of printing the stack trace
-      System.err.println("Error loading properties file: " + e.getMessage());
+      System.err.println("Error loading properties file. Please check the file path and format.");
     }
     return prop;
   }
