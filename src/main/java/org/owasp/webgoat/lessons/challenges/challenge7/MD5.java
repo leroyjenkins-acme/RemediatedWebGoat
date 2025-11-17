@@ -57,7 +57,7 @@ public class MD5 {
             System.err.println("File does not exist: " + element);
             continue;
           }
-          Path path = file.toPath().toRealPath();
+          Path path = file.toPath().toRealPath().normalize();
           System.out.println(MD5.getHashString(path.toFile()) + " " + path);
         } catch (IOException x) {
           System.err.println("An error occurred while processing the file.");
@@ -425,6 +425,18 @@ public class MD5 {
    */
   private static final byte padding[] = {
     (byte) 0x80,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
     0,
     0,
     0,
